@@ -14,13 +14,13 @@ config.py —— 全项目统一参数（只改这里，不要在别的文件里
 #   addr        SHT30 的 I2C 地址：0x44（ADDR 接地）或 0x45（ADDR 接电源）。None 表示还没配置
 #   mux_channel 使用 TCA9548A 时的通道号 0~7；不经过多路复用器填 None
 #
-# 待确认：三个模块的实际地址、是否用 TCA9548A。
-# SHT30 只有两个地址，第三个测点在硬件方案确定前先留空（None），
-# 读取时会明确报告 not_configured，而不是假装有数据。
+# 项目决定使用 2 个传感器（放弃第三个），所以只有两个测点。
+# 两个 SHT30 的地址必须不同：一个 0x44，一个 0x45，不需要 TCA9548A。
+# 待确认：两个模块的实际地址（默认通常都是 0x44，要改其中一个模块的地址跳线/焊盘，
+#         改完用 tests/board_check_sensor.py 扫描确认）。
 SENSORS = [
     {"name": "point1", "addr": 0x44, "mux_channel": None},
     {"name": "point2", "addr": 0x45, "mux_channel": None},
-    {"name": "point3", "addr": None, "mux_channel": None},
 ]
 
 # 派生值，不要另外手写，避免与 SENSORS 不一致
@@ -40,7 +40,7 @@ I2C_TIMEOUT_US = 50000        # 官方默认值 50ms
 # 三、TCA9548A 多路复用器（待确认是否需要）
 # ---------------------------------------------------------------
 USE_MUX = False
-MUX_ADDR = 0x70               # 待确认：以实际模块的地址跳线为准
+MUX_ADDR = 0x70               # 两个传感器地址不同，不需要它；保持 USE_MUX = False
 
 # ---------------------------------------------------------------
 # 四、SHT30 测量参数（来自 Sensirion 数据手册）
