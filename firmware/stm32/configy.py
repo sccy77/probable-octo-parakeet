@@ -9,6 +9,9 @@
 PIN_RELAY   = "A1"
 PIN_FAN     = "A2"
 
+# OLED 配置 I2C1
+OLED_SDA = 'B9'
+OLED_SCL = 'B8'
 
 
 
